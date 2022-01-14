@@ -3,7 +3,7 @@ pipeline {
     environment {
         AWS_ACCOUNT_ID = credentials('aws-account-id')
         AWS_DEFAULT_REGION = "ap-south-1" 
-        IMAGE_REPO_NAME = "nodejsapp"
+        IMAGE_REPO_NAME = "hello_user"
         IMAGE_TAG = "latest"
         REPOSITORY_URI = "${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${IMAGE_REPO_NAME}"
         NOTIFY_EVENT_TOKEN = credentials('notify-token')
@@ -36,7 +36,7 @@ pipeline {
             options { timeout(time: 2, unit: 'MINUTES') }
             steps{
                 script {
-                    notifyEvents message: "Please <a href='${BUILD_URL}input'>click here</a> to go to console output of buildID ${BUILD_ID} to approve or Reject.", token: "$NOTIFY_EVENT_TOKEN"
+                    notifyEvents message: "Please <a href='${BUILD_URL}input'>click here</a> to go to console output of build-id ${BUILD_ID} to approve or Reject.", token: "${NOTIFY_EVENT_TOKEN}"
                     //userInput = input submitter: '', message: "Do you approve the Build-${BUILD_TAG} ?"
                     env.node_name = input id: 'Agent', message: "Do you approve the Build-${BUILD_TAG} ?", submitter: 'admin', parameters: [choice(choices: ['agent1', 'agent2'], description: 'Which production machine?', name: 'agentSelect')]
                 }
@@ -56,7 +56,7 @@ pipeline {
             steps{
                 script {
                     //sh "echo Notification Sent"
-                    notifyEvents message: '$BUILD_TAG | Built successfully', token: "$NOTIFY_EVENT_TOKEN"
+                    notifyEvents message: '$BUILD_TAG | Built successfully', token: "${NOTIFY_EVENT_TOKEN}"
                 }
             }
         }
@@ -67,9 +67,9 @@ pipeline {
                 script {
                     sh "aws ecr get-login-password --region ${AWS_DEFAULT_REGION} | docker login --username AWS --password-stdin ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com"
                     sh "docker pull ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${IMAGE_REPO_NAME}:version${env.BUILD_NUMBER}"
-                    sh 'docker ps -q --filter "name=nodejsapp" | grep -q . && docker kill nodejsapp || echo No running nodejsapp containers'
+                    sh "docker ps -q --filter 'name=${IMAGE_REPO_NAME}' | grep -q . && docker kill ${IMAGE_REPO_NAME} || echo No running ${IMAGE_REPO_NAME} containers"
                     sh "sleep 10"
-                    sh "docker run --rm --name nodejsapp -d -p 1111:8080 ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${IMAGE_REPO_NAME}:version${env.BUILD_NUMBER}"
+                    sh "docker run --rm --name ${IMAGE_REPO_NAME} -d -p 80:80 ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${IMAGE_REPO_NAME}:version${env.BUILD_NUMBER}"
                 }
             }
         }
@@ -77,7 +77,7 @@ pipeline {
         stage('Container Notification') {
             steps{
                 script {
-                    notifyEvents message: 'Conrainer is up and running', token: "$NOTIFY_EVENT_TOKEN"
+                    notifyEvents message: "${IMAGE_REPO_NAME} Conrainer is up and running", token: "${NOTIFY_EVENT_TOKEN}"
                 }
             }
         }
