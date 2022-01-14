@@ -1,5 +1,5 @@
 {
-  "AWSTemplateFormatVersion": "2010-09-09",
+  "AWSTemplateFormatVersion": '${date "+%Y-%m-%d"}',
   "Description": "AWS CloudFormation template to create resources required to run tasks on an ECS cluster.",
   "Mappings": {
     "VpcCidrs": {
