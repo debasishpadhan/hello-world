@@ -5,6 +5,7 @@ pipeline {
         AWS_DEFAULT_REGION = "ap-south-1" 
         IMAGE_REPO_NAME = "hello_user"
         IMAGE_TAG = "latest"
+        CONTAINER_PORT = "80:80"
         REPOSITORY_URI = "${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${IMAGE_REPO_NAME}"
         NOTIFY_EVENT_TOKEN = credentials('notify-token')
     }
@@ -69,7 +70,7 @@ pipeline {
                     sh "docker pull ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${IMAGE_REPO_NAME}:version${env.BUILD_NUMBER}"
                     sh "docker ps -q --filter 'name=${IMAGE_REPO_NAME}' | grep -q . && docker kill ${IMAGE_REPO_NAME} || echo No running ${IMAGE_REPO_NAME} containers"
                     sh "sleep 10"
-                    sh "docker run --rm --name ${IMAGE_REPO_NAME} -d -p 80:80 ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${IMAGE_REPO_NAME}:version${env.BUILD_NUMBER}"
+                    sh "docker run --rm --name ${IMAGE_REPO_NAME} -d -p ${CONTAINER_PORT} ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${IMAGE_REPO_NAME}:version${env.BUILD_NUMBER}"
                 }
             }
         }
