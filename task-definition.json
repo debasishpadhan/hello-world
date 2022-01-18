@@ -1,0 +1,27 @@
+{
+    "family": "hello_user",
+    "taskRoleArn": "arn:aws:iam::787020721737:role/ecsTaskExecutionRoleTest",
+    "executionRoleArn": "arn:aws:iam::787020721737:role/ecsTaskExecutionRoleTest",
+    "networkMode": "awsvpc",
+    "containerDefinitions": [
+        {
+            "image": "787020721737.dkr.ecr.ap-south-1.amazonaws.com/hello_user:version5",
+            "name": "hello_user",
+	        "cpu": 10,
+            "memory": 256,
+            "essential": true,
+            "portMappings": [
+                {
+                    "containerPort": 80,
+                    "hostPort": 80,
+		    "protocol": "tcp"
+                }
+            ]
+        }
+    ],
+    "requiresCompatibilities": [
+        "FARGATE"
+    ],
+    "cpu": "1024",
+    "memory": "2048"
+}
