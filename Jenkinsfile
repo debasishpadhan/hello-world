@@ -58,6 +58,7 @@ pipeline {
             steps {  
                 script {
                     sh "sed 's/version*/version${env.BUILD_NUMBER}/g' task-definition.json"
+                    sh "pwd"
                     sh "cat task-definition.json"
                     //sh "bash ecs-cluster-task.sh"
                     //notifyEvents message: 'Cluster is Up and Running', token: "${NOTIFY_EVENT_TOKEN}"
