@@ -1,12 +1,12 @@
 {
-    "family": "hello_user",
+    "family": "hello-docker",
     "taskRoleArn": "arn:aws:iam::787020721737:role/ecsTaskExecutionRoleTest",
     "executionRoleArn": "arn:aws:iam::787020721737:role/ecsTaskExecutionRoleTest",
     "networkMode": "awsvpc",
     "containerDefinitions": [
         {
-            "image": "787020721737.dkr.ecr.ap-south-1.amazonaws.com/hello_user:version5",
-            "name": "hello_user",
+            "image": "787020721737.dkr.ecr.ap-south-1.amazonaws.com/hello-docker:version",
+            "name": "hello-docker",
 	    "cpu": 10,
             "memory": 256,
             "essential": true,
