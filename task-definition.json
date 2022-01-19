@@ -7,7 +7,7 @@
         {
             "image": "787020721737.dkr.ecr.ap-south-1.amazonaws.com/hello_user:version5",
             "name": "hello_user",
-	        "cpu": 10,
+	    "cpu": 10,
             "memory": 256,
             "essential": true,
             "portMappings": [
