@@ -1,5 +1,5 @@
 #aws ecs create-cluster --cluster-name fargate-cluster
-sed "s/version*/version${env.BUILD_NUMBER}/g" task-definition.json
+sed 's/version*/version${env.BUILD_NUMBER}/g' task-definition.json
 cat task-definition.json
 #aws ecs register-task-definition --cli-input-json file://task-definition.json
 
