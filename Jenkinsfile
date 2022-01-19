@@ -61,8 +61,8 @@ pipeline {
                     //sh "cat task-definition.json"
                     sh "bash ecs-cluster-task.sh"
                     //notifyEvents message: 'Cluster is Up and Running', token: "${NOTIFY_EVENT_TOKEN}"
-                    //sh "sleep 10m"
-                    //sh "aws ecs delete-service --cluster fargate-cluster --service fargate-service --force"
+                    sh "sleep 5m"
+                    sh "aws ecs delete-service --cluster fargate-cluster --service fargate-service --force"
                 }
             }
         }
