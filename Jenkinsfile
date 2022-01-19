@@ -57,7 +57,7 @@ pipeline {
             agent { label "master" }
             steps {  
                 script {
-                    sh "sed 's/version*/version${env.BUILD_NUMBER}/g' task-definition.json"
+                    //sh "sed 's/version*/version${env.BUILD_NUMBER}/g' task-definition.json"
                     sh "pwd"
                     sh "cat task-definition.json"
                     //sh "bash ecs-cluster-task.sh"
