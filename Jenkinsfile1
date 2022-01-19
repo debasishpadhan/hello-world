@@ -13,7 +13,6 @@ pipeline {
         stage('Git Clone') {
             steps {
                 checkout scm
-                sh "pwd && ls -ltrh"
             }
         }
         
