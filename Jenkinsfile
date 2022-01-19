@@ -57,19 +57,16 @@ pipeline {
             agent { label "master" }
             steps {  
                 script {
-                    sh "aws ecs create-cluster --cluster-name fargate-cluster && sleep 3m"
                     sh "sed 's/version*/version${env.BUILD_NUMBER}/' task-definition.json"
-                    sh "aws ecs register-task-definition --cli-input-json file://$HOME/task-definition.json"
-                    sh "aws ecs create-service --cluster fargate-cluster --service-name fargate-service --task-definition ${IMAGE_REPO_NAME}:4 --desired-count 1 --launch-type 'FARGATE' --network-configuration 'awsvpcConfiguration={subnets=[subnet-0bba38ef988e68656,subnet-0d5fb5b19d05062b9],securityGroups=[sg-00deb8fbfc3520975],assignPublicIp=ENABLED}'"
-                    sh "aws ecs list-services --cluster fargate-cluster"
-                    //sh "sleep 10m"
-                    //sh "aws ecs delete-service --cluster fargate-cluster --service fargate-service --force"
-                    //sh "aws ecs delete-cluster --cluster fargate-cluster"
+                    sh "bash ecs-cluster-task.sh"
+                    notifyEvents message: 'Cluster is Up and Running', token: "${NOTIFY_EVENT_TOKEN}"
+                    sh "sleep 10m"
+                    sh "aws ecs delete-service --cluster fargate-cluster --service fargate-service --force"
                 }
             }
         }
 
-        stage('Skype Notification') {
+        /*stage('Skype Notification') {
             steps {
                 script {
                     notifyEvents message: 'Cluster is Up and Running', token: "${NOTIFY_EVENT_TOKEN}"
@@ -77,7 +74,7 @@ pipeline {
             }
         }
 
-        /*stage('Skype Notification') {
+        stage('Skype Notification') {
             steps {
                 script {
                     //sh "echo Notification Sent"
