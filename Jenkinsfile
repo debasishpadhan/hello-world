@@ -58,7 +58,7 @@ pipeline {
             agent { label "master" }
             steps {  
                 script {
-                    updateContainerDefinitionJsonWithImageVersion()
+                    //updateContainerDefinitionJsonWithImageVersion()
                     sh "bash ecs-cluster-task.sh"
                     //notifyEvents message: 'Cluster is Up and Running', token: "${NOTIFY_EVENT_TOKEN}"
                     sh "sleep 10m"
