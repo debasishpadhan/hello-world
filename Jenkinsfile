@@ -59,10 +59,10 @@ pipeline {
             steps {  
                 script {
                     //updateContainerDefinitionJsonWithImageVersion()
-                    sh "bash ecs-cluster-task.sh"
+                    sh "bash ecs-cluster-task-test.sh"
                     //notifyEvents message: 'Cluster is Up and Running', token: "${NOTIFY_EVENT_TOKEN}"
-                    sh "sleep 5m"
-                    sh "aws ecs delete-service --cluster fargate-cluster --service fargate-service --force"
+                    //sh "sleep 5m"
+                    //sh "aws ecs delete-service --cluster fargate-cluster --service fargate-service --force"
                     //sh "aws ecs delete-cluster --cluster fargate-cluster"
                 }
             }
