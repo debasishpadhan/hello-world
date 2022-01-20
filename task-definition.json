@@ -5,7 +5,7 @@
     "networkMode": "awsvpc",
     "containerDefinitions": [
         {
-            "image": "",
+            "image": "787020721737.dkr.ecr.ap-south-1.amazonaws.com/hello-docker:version20",
             "name": "hello-docker",
 	    "cpu": 10,
             "memory": 256,
