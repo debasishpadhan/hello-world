@@ -7,6 +7,7 @@ pipeline {
         IMAGE_TAG = "latest"
         //CONTAINER_PORT = "80:80"
         REPOSITORY_URI = "${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${IMAGE_REPO_NAME}"
+        AWS_ECS_TASK_DEFINITION_PATH = './task-definition.json'
         NOTIFY_EVENT_TOKEN = credentials('notify-token')
     }
    
@@ -57,11 +58,10 @@ pipeline {
             agent { label "master" }
             steps {  
                 script {
-                    //sh "sed 's/version*/version${env.BUILD_NUMBER}/g' task-definition.json"
-                    //sh "cat task-definition.json"
+                    updateContainerDefinitionJsonWithImageVersion()
                     sh "bash ecs-cluster-task.sh"
                     //notifyEvents message: 'Cluster is Up and Running', token: "${NOTIFY_EVENT_TOKEN}"
-                    sh "sleep 5m"
+                    sh "sleep 10m"
                     sh "aws ecs delete-service --cluster fargate-cluster --service fargate-service --force"
                 }
             }
@@ -105,4 +105,11 @@ pipeline {
             }
         }*/
     }
+}
+
+def updateContainerDefinitionJsonWithImageVersion() {
+    def containerDefinitionJson = readJSON file: AWS_ECS_TASK_DEFINITION_PATH, returnPojo: true
+    containerDefinitionJson[0]['image'] = "${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${IMAGE_REPO_NAME}:version${env.BUILD_NUMBER}".inspect()
+    echo "task definiton json: ${containerDefinitionJson}"
+    writeJSON file: AWS_ECS_TASK_DEFINITION_PATH, json: containerDefinitionJson
 }
