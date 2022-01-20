@@ -38,7 +38,7 @@ pipeline {
             options { timeout(time: 2, unit: 'MINUTES') }
             steps {
                 script {
-                    //notifyEvents message: "Please <a href='${BUILD_URL}/input'>click here</a> to go to console output of build-id ${BUILD_ID} to approve or Reject.", token: "${NOTIFY_EVENT_TOKEN}"
+                    notifyEvents message: "Please <a href='${BUILD_URL}/input'>click here</a> to go to console output of build-id ${BUILD_ID} to approve or Reject.", token: "${NOTIFY_EVENT_TOKEN}"
                     userInput = input submitter: '', message: "Do you approve the Build-${BUILD_TAG} ?"
                     //env.node_name = input id: 'Agent', message: "Do you approve the Build-${BUILD_TAG} ?", submitter: 'admin', parameters: [choice(choices: ['agent1', 'agent2'], description: 'Which production machine?', name: 'agentSelect')]
                 }
@@ -60,10 +60,7 @@ pipeline {
                 script {
                     //updateContainerDefinitionJsonWithImageVersion()
                     sh "bash ecs-cluster-task-test.sh"
-                    //notifyEvents message: 'Cluster is Up and Running', token: "${NOTIFY_EVENT_TOKEN}"
-                    //sh "sleep 5m"
-                    //sh "aws ecs delete-service --cluster fargate-cluster --service fargate-service --force"
-                    //sh "aws ecs delete-cluster --cluster fargate-cluster"
+                    notifyEvents message: 'Cluster is Up and Running', token: "${NOTIFY_EVENT_TOKEN}"
                 }
             }
         }
@@ -108,9 +105,9 @@ pipeline {
     }
 }
 
-def updateContainerDefinitionJsonWithImageVersion() {
+/*def updateContainerDefinitionJsonWithImageVersion() {
     def containerDefinitionJson = readJSON file: AWS_ECS_TASK_DEFINITION_PATH, returnPojo: true
     containerDefinitionJson[0]['image'] = "${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${IMAGE_REPO_NAME}:version${env.BUILD_NUMBER}".inspect()
     echo "task definiton json: ${containerDefinitionJson}"
     writeJSON file: AWS_ECS_TASK_DEFINITION_PATH, json: containerDefinitionJson
-}
+}*/
