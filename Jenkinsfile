@@ -110,7 +110,7 @@ pipeline {
 
 def updateContainerDefinitionJsonWithImageVersion() {
     def containerDefinitionJson = readJSON file: AWS_ECS_TASK_DEFINITION_PATH, returnPojo: true
-    containerDefinitionJson[0]["image"] = "${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${IMAGE_REPO_NAME}:version${env.BUILD_NUMBER}".inspect()
+    containerDefinitionJson[1]['image'] = "${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${IMAGE_REPO_NAME}:version${env.BUILD_NUMBER}".inspect()
     echo "task definiton json: ${containerDefinitionJson}"
     writeJSON file: AWS_ECS_TASK_DEFINITION_PATH, json: containerDefinitionJson
 }
