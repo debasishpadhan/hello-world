@@ -1,7 +1,7 @@
 PATH=$PATH:/usr/local/bin; export PATH
-env
-#aws ecs create-cluster --cluster-name fargate-cluster
-sed -i "s|version|$BUILD_NUMBER" task-definition.json
+#env
+aws ecs create-cluster --cluster-name fargate-cluster
+#sed -i "s|version|$BUILD_NUMBER" task-definition.json
 #cat task-definition.json
 aws ecs register-task-definition --cli-input-json file://${WORKSPACE}/task-definition.json
 
