@@ -1,5 +1,5 @@
 steps:
- - id: Branch Validation
+  - id: Branch Validation
     name: gcr.io/cloud-builders/gcloud
     entrypoint: bash
     args:
