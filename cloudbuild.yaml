@@ -2,16 +2,13 @@ steps:
   - id: Branch Validation
     name: gcr.io/cloud-builders/gcloud
     entrypoint: bash
-    env:
-      - 'BRANCH=$(git rev-parse --abbrev-ref HEAD)'
     args:
       - '-c'
       - |
-          # GIT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
-          if [ "$BRANCH" != "master" ]; then
-            echo "Build aborted: Branch is $BRANCH"
+          if [ $(git rev-parse --abbrev-ref HEAD) != "master" ]; then
+            echo "Build aborted: Branch is $(git rev-parse --abbrev-ref HEAD)"
           else
-            echo "Build success: Branch is $BRANCH"
+            echo "Build success: Branch is $(git rev-parse --abbrev-ref HEAD)"
           fi
 options:
   logging: CLOUD_LOGGING_ONLY
