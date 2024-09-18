@@ -5,11 +5,13 @@ steps:
     args:
       - '-c'
       - |
-          GIT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
-          if [ "$GIT_BRANCH" != "master" ]; then
-            echo "Build aborted: Branch is $GIT_BRANCH"
+          # GIT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
+          if [ "$_GIT_BRANCH" != "master" ]; then
+            echo "Build aborted: Branch is $_GIT_BRANCH"
           else
-            echo "Build success: Branch is $GIT_BRANCH"
+            echo "Build success: Branch is $_GIT_BRANCH"
           fi
 options:
   logging: CLOUD_LOGGING_ONLY
+substitutions:
+  _GIT_BRANCH: $(git rev-parse --abbrev-ref HEAD)
