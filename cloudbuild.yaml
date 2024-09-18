@@ -5,7 +5,7 @@ steps:
     args:
       - '-c'
       - |
-          echo "BRANCH_NAME=$(git rev-parse --abbrev-ref HEAD)" >> $BUILD_WORKSPACE/branch_info.txt
-          cat $BUILD_WORKSPACE/branch_info.txt
+          echo "BRANCH_NAME=$(git rev-parse --abbrev-ref HEAD)" >> branch_info.txt
+          cat branch_info.txt
 options:
   logging: CLOUD_LOGGING_ONLY
