@@ -6,3 +6,5 @@ steps:
         echo $BRANCH_NAME
         exit 1
       fi
+options:
+  logging: CLOUD_LOGGING_ONLY
