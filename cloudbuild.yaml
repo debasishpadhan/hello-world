@@ -1,10 +1,14 @@
 steps:
-  - name: 'Check if branch is master'
-    script: |
-      if [ "$BRANCH_NAME" != "master" ]; then
-        echo "Build aborted: Branch is not master"
-        echo $BRANCH_NAME
-        exit 1
-      fi
+ - id: Branch Validation
+    name: gcr.io/cloud-builders/gcloud
+    entrypoint: bash
+    args:
+      - '-c'
+      - |
+          if [ "$BRANCH_NAME" != "master" ]; then
+            echo "Build aborted: Branch is not master"
+            echo $BRANCH_NAME
+            exit 1
+          fi
 options:
   logging: CLOUD_LOGGING_ONLY
