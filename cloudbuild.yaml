@@ -1,20 +1,11 @@
 steps:
   - id: Branch Validation
-    name: 'ubuntu'
+    name: gcr.io/cloud-builders/gcloud
     entrypoint: bash
     args:
       - '-c'
       - |
-          if [ "$BRANCH_NAME" != "master" ]; then
-            echo "Build aborted: Branch is not master"
-            echo "##############"
-            echo $BRANCH_NAME
-            echo "##############"
-            git branch
-            echo "##############"
-            git rev-parse --symbolic-full-name HEAD
-            echo "##############"
-            env
-          fi
+          echo "BRANCH_NAME=$(git rev-parse --abbrev-ref HEAD)" >> $BUILD_WORKSPACE/branch_info.txt
+          cat $BUILD_WORKSPACE/branch_info.txt
 options:
   logging: CLOUD_LOGGING_ONLY
