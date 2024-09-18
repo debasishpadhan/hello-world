@@ -5,7 +5,11 @@ steps:
     args:
       - '-c'
       - |
-          echo "BRANCH_NAME=$(git rev-parse --abbrev-ref HEAD)" >> branch_info.txt
-          cat branch_info.txt
+          GIT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
+          if [ "$GIT_BRANCH" != "master" ]; then
+            echo "Build aborted: Branch is $GIT_BRANCH"
+          else
+            echo "Build success: Branch is $GIT_BRANCH"
+          fi
 options:
   logging: CLOUD_LOGGING_ONLY
